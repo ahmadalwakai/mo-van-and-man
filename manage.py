@@ -4,12 +4,16 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from app.models import db, User
 from app.routes import routes
+import os
 
 # Initialize the Flask app
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///your_database.db'
+
+# Configure the database
+db_path = os.path.join(os.path.dirname(__file__), 'your_database.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'your_secret_key'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'default_secret_key')
 
 # Initialize extensions
 db.init_app(app)
@@ -25,5 +29,6 @@ app.register_blueprint(routes)
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+# Run the app
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
