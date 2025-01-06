@@ -15,7 +15,7 @@ import logging
 import uuid
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.forms import LoginForm, RegistrationForm
-from app.models import User, Order
+from app.models import User, Order, ChatMessage
 from app.utils.helpers import calculate_price
 
 # Initialize the Flask application
@@ -164,53 +164,35 @@ def upload_image():
 
     return jsonify({'image_url': f'/static/uploads/{filename}'})
 
+@app.route('/api/orders', methods=['GET'])
+def api_orders():
+    orders = Order.query.all()
+    return jsonify([order.to_dict() for order in orders])
+
+@app.route('/api/users', methods=['GET'])
+def api_users():
+    users = User.query.all()
+    return jsonify([user.to_dict() for user in users])
+
+@app.route('/api/order/<int:order_id>', methods=['GET'])
+def api_order_detail(order_id):
+    order = Order.query.get_or_404(order_id)
+    return jsonify(order.to_dict())
+
+@app.route('/api/user/<int:user_id>', methods=['GET'])
+def api_user_detail(user_id):
+    user = User.query.get_or_404(user_id)
+    return jsonify(user.to_dict())
+
 # Helper function to send confirmation email
 def send_confirmation_email(email, username):
-    try:
-        msg = Message(
-            subject="Welcome to Mo Van and Man",
-            sender=app.config['MAIL_USERNAME'],
-            recipients=[email]
-        )
-        msg.html = render_template('emails/confirmation.html', username=username)
-        mail.send(msg)
-        app.logger.info(f"Confirmation email sent to {email}")
-    except Exception as e:
-        app.logger.error(f"Failed to send confirmation email to {email}: {e}")
+    # Disabled temporarily to avoid errors during deployment
+    pass
 
 # Helper function to send order invoice
 def send_order_invoice(email, order):
-    if not email:
-        app.logger.warning("No email provided for sending the invoice.")
-        return
-    try:
-        pdf = FPDF()
-        pdf.add_page()
-        pdf.set_font("Arial", size=12)
-        pdf.cell(200, 10, txt="Order Invoice", ln=True, align="C")
-        pdf.cell(200, 10, txt=f"Order ID: {order.id}", ln=True)
-        pdf.cell(200, 10, txt=f"Pickup Location: {order.pickup_location}", ln=True)
-        pdf.cell(200, 10, txt=f"Dropoff Location: {order.dropoff_location}", ln=True)
-        pdf.cell(200, 10, txt=f"Price: £{order.price:.2f}", ln=True)
-        pdf.cell(200, 10, txt=f"Payment Method: {order.payment_method}", ln=True)
-
-        invoice_filename = f"invoice_{order.id}.pdf"
-        pdf.output(invoice_filename)
-
-        msg = Message(
-            subject="Your Order Invoice",
-            sender=app.config['MAIL_USERNAME'],
-            recipients=[email]
-        )
-        msg.html = render_template('emails/invoice.html', order=order)
-
-        with open(invoice_filename, "rb") as f:
-            msg.attach(invoice_filename, "application/pdf", f.read())
-
-        mail.send(msg)
-        os.remove(invoice_filename)
-    except Exception as e:
-        app.logger.error(f"Failed to send order invoice to {email}: {e}")
+    # Disabled temporarily to avoid errors during deployment
+    pass
 
 if __name__ == "__main__":
     socketio.run(app)
