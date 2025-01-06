@@ -1,6 +1,4 @@
-
 from fpdf import FPDF
-from flask_mail import Message
 from flask import render_template, current_app as app
 
 def send_order_invoice(email, order):
@@ -22,17 +20,7 @@ def send_order_invoice(email, order):
         invoice_filename = f"invoice_{order.id}.pdf"
         pdf.output(invoice_filename)
 
-        msg = Message(
-            subject="Your Order Invoice",
-            sender=app.config['MAIL_USERNAME'],
-            recipients=[email]
-        )
-        msg.html = render_template('emails/invoice.html', order=order)
-
-        with open(invoice_filename, "rb") as f:
-            msg.attach(invoice_filename, "application/pdf", f.read())
-
-        mail.send(msg)
+        app.logger.info(f"Invoice saved as {invoice_filename} (email sending disabled)")
         os.remove(invoice_filename)
     except Exception as e:
-        app.logger.error(f"Failed to send order invoice to {email}: {e}")
+        app.logger.error(f"Failed to process order invoice: {e}")
