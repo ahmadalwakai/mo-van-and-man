@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+</head>
+<body>
+    <h2>Chat</h2>
+    <form method="POST">
+        <textarea name="message" placeholder="Type your message" required></textarea><br>
+        <button type="submit">Send Message</button>
+    </form>
+
+    <h3>Messages</h3>
+    <ul>
+        {% for message in messages %}
+        <li>{{ message.timestamp }} - {{ message.message }}</li>
+        {% else %}
+        <p>No messages yet.</p>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+</html>

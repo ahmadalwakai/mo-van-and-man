@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h2>Welcome, {{ current_user.first_name }}!</h2>
+
+    <h3>Your Orders</h3>
+    <ul>
+        {% for order in orders %}
+        <li>Order ID: {{ order.id }} - Status: {{ order.status }} - Price: £{{ order.price }}</li>
+        {% else %}
+        <p>No orders placed yet.</p>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ url_for('place_order') }}">Place an Order</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>
