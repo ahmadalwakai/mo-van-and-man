@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Portal | MoVan & Man</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <!-- Dashboard Navigation -->
+    <header>
+        <nav class="dashboard-nav">
+            <div class="logo">MoVan & Man</div>
+            <ul>
+                <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="{{ url_for('place_order') }}"><i class="fas fa-plus-circle"></i> New Booking</a></li>
+                <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dashboard-container">
+        <section class="welcome-section">
+            <h1>Welcome, {{ session['username'] }}!</h1>
+            <p>Here are your current bookings. Manage your orders easily from your dashboard.</p>
+        </section>
+
+        <!-- Search Bar -->
+        <section class="search-section">
+            <input type="text" id="searchInput" placeholder="Search your bookings..." onkeyup="searchTable()">
+            <button class="btn-primary"><i class="fas fa-search"></i> Search</button>
+        </section>
+
+        <!-- Booking Table -->
+        <section class="table-section">
+            <h2>Your Bookings</h2>
+            <table class="booking-table" id="bookingTable">
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Pickup Location</th>
+                        <th>Dropoff Location</th>
+                        <th>Pickup Date</th>
+                        <th>Status</th>
+                        <th>Total Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>#{{ booking[0] }}</td>
+                        <td>{{ booking[2] }}</td>
+                        <td>{{ booking[3] }}</td>
+                        <td>{{ booking[4] }}</td>
+                        <td>
+                            <span class="status-badge {{ 'confirmed' if booking[11] == 'Confirmed' else 'pending' }}">
+                                {{ booking[11] }}
+                            </span>
+                        </td>
+                        <td>£{{ booking[9] }}</td>
+                        <td>
+                            <a href="{{ url_for('order_summary', booking_id=booking[0]) }}" class="btn-secondary">View</a>
+                            <a href="{{ url_for('feedback', booking_id=booking[0]) }}" class="btn-success">Leave Feedback</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; {{ year() }} MoVan & Man. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        function searchTable() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.getElementById('bookingTable').getElementsByTagName('tr');
+
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                row.style.display = row.innerText.toLowerCase().includes(input) ? '' : 'none';
+            }
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,158 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1>Welcome to <span class="brand-name">MoVan & Man</span></h1>
+        <p>Effortless moving at your fingertips. Reliable, fast, and affordable service across the UK.</p>
+        <a href="{{ url_for('place_order') }}" class="btn-primary">Get a Quote Now</a>
+    </div>
+    <div class="hero-image">
+        <img src="{{ url_for('static', filename='images/moving-truck.png') }}" alt="Moving Truck">
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about-section">
+    <div class="container">
+        <h2>Why Choose Us?</h2>
+        <p>At MoVan & Man, we believe in making your moving experience seamless and stress-free. We offer affordable prices, professional drivers, and reliable service every time.</p>
+        <div class="features">
+            <div class="feature-item">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Reliable & Safe</h3>
+                <p>Your belongings are in safe hands.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-clock"></i>
+                <h3>On Time, Every Time</h3>
+                <p>Punctual service that respects your schedule.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-money-bill-wave"></i>
+                <h3>Affordable Pricing</h3>
+                <p>No hidden costs. What you see is what you pay.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works">
+    <div class="container">
+        <h2>How It Works</h2>
+        <div class="steps">
+            <div class="step-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <h3>Step 1: Enter Your Details</h3>
+                <p>Provide pickup and dropoff addresses to get an instant quote.</p>
+            </div>
+            <div class="step-item">
+                <i class="fas fa-truck"></i>
+                <h3>Step 2: Confirm Your Booking</h3>
+                <p>Review the price and confirm your order in just a few clicks.</p>
+            </div>
+            <div class="step-item">
+                <i class="fas fa-smile"></i>
+                <h3>Step 3: Sit Back & Relax</h3>
+                <p>Our professional drivers will handle the move for you.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Section -->
+<section class="pricing-section">
+    <div class="container">
+        <h2>Transparent Pricing</h2>
+        <p>Our pricing is clear and upfront. No hidden charges.</p>
+        <div class="pricing-cards">
+            <div class="pricing-card">
+                <h3>Short Route</h3>
+                <p>Starting from £50</p>
+                <ul>
+                    <li>Up to 30 miles</li>
+                    <li>Small & large items</li>
+                    <li>Reliable service</li>
+                </ul>
+                <a href="{{ url_for('place_order') }}" class="btn-secondary">Book Now</a>
+            </div>
+            <div class="pricing-card popular">
+                <h3>Medium Route</h3>
+                <p>Starting from £100</p>
+                <ul>
+                    <li>30 to 100 miles</li>
+                    <li>Multiple floors included</li>
+                    <li>Professional drivers</li>
+                </ul>
+                <a href="{{ url_for('place_order') }}" class="btn-secondary">Book Now</a>
+            </div>
+            <div class="pricing-card">
+                <h3>Long Route</h3>
+                <p>Starting from £320</p>
+                <ul>
+                    <li>Over 100 miles</li>
+                    <li>Bulk items & more</li>
+                    <li>Priority service</li>
+                </ul>
+                <a href="{{ url_for('place_order') }}" class="btn-secondary">Book Now</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact-section">
+    <div class="container">
+        <h2>Contact Us</h2>
+        <form action="#" method="POST" class="contact-form">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your Name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Your Email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn-primary">Send Message</button>
+        </form>
+    </div>
+</section>
+
+<!-- Testimonial Section -->
+<section class="testimonial-section">
+    <div class="container">
+        <h2>What Our Customers Say</h2>
+        <div class="testimonials">
+            <div class="testimonial-item">
+                <p>"MoVan & Man made my move stress-free. Great service and friendly staff!"</p>
+                <h4>- Sarah T.</h4>
+            </div>
+            <div class="testimonial-item">
+                <p>"Affordable and reliable. I highly recommend their moving services."</p>
+                <h4>- John D.</h4>
+            </div>
+            <div class="testimonial-item">
+                <p>"Punctual and professional. Couldn't ask for a better moving experience!"</p>
+                <h4>- Emily W.</h4>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer CTA -->
+<section class="footer-cta">
+    <div class="container">
+        <h2>Ready to Move?</h2>
+        <p>Get a free quote and start your move today with MoVan & Man.</p>
+        <a href="{{ url_for('place_order') }}" class="btn-primary">Get Started</a>
+    </div>
+</section>
+
+{% endblock %}

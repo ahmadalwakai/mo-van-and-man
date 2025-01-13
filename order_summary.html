@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Summary | MoVan & Man</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="dashboard-nav">
+            <div class="logo">MoVan & Man</div>
+            <ul>
+                <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="{{ url_for('customer_portal') }}"><i class="fas fa-user"></i> My Portal</a></li>
+                <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Order Summary Section -->
+    <main class="summary-container">
+        <section class="summary-section">
+            <h1>Your Booking Summary</h1>
+            <p>Thank you for booking with MoVan & Man! Here are your order details:</p>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <!-- Order Details Table -->
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>Detail</th>
+                        <th>Information</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Booking ID</td>
+                        <td>#{{ booking.id }}</td>
+                    </tr>
+                    <tr>
+                        <td>Pickup Location</td>
+                        <td>{{ booking.pickup_location }}</td>
+                    </tr>
+                    <tr>
+                        <td>Dropoff Location</td>
+                        <td>{{ booking.dropoff_location }}</td>
+                    </tr>
+                    <tr>
+                        <td>Pickup Date</td>
+                        <td>{{ booking.pickup_date }}</td>
+                    </tr>
+                    <tr>
+                        <td>Pickup Time</td>
+                        <td>{{ booking.pickup_time }}</td>
+                    </tr>
+                    <tr>
+                        <td>Number of Items</td>
+                        <td>{{ booking.items_count }}</td>
+                    </tr>
+                    <tr>
+                        <td>Item Type</td>
+                        <td>{{ booking.item_type }}</td>
+                    </tr>
+                    <tr>
+                        <td>Distance</td>
+                        <td>{{ booking.distance }} miles</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>Total Price</td>
+                        <td>£{{ booking.total_price }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Download Invoice Button -->
+            <div class="actions">
+                <button class="btn-primary" onclick="downloadInvoice()">Download PDF Invoice</button>
+                <a href="{{ url_for('customer_portal') }}" class="btn-secondary">Back to Portal</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; {{ year() }} MoVan & Man. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JavaScript for PDF Invoice -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script>
+        function downloadInvoice() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Invoice Content
+            doc.setFont("Poppins", "bold");
+            doc.setFontSize(22);
+            doc.text("MoVan & Man - Booking Invoice", 20, 20);
+
+            doc.setFontSize(16);
+            doc.text(`Booking ID: #${{{ booking.id }}}`, 20, 40);
+            doc.text(`Pickup Location: ${{{ booking.pickup_location }}}`, 20, 50);
+            doc.text(`Dropoff Location: ${{{ booking.dropoff_location }}}`, 20, 60);
+            doc.text(`Pickup Date: ${{{ booking.pickup_date }}}`, 20, 70);
+            doc.text(`Pickup Time: ${{{ booking.pickup_time }}}`, 20, 80);
+            doc.text(`Number of Items: ${{{ booking.items_count }}}`, 20, 90);
+            doc.text(`Item Type: ${{{ booking.item_type }}}`, 20, 100);
+            doc.text(`Distance: ${{{ booking.distance }}} miles`, 20, 110);
+
+            doc.setFont("Poppins", "bold");
+            doc.text(`Total Price: £${{{ booking.total_price }}}`, 20, 130);
+
+            doc.save("MoVan_Invoice.pdf");
+        }
+    </script>
+</body>
+
+</html>

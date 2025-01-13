@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Booking | MoVan & Man</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="dashboard-nav">
+            <div class="logo">MoVan & Man</div>
+            <ul>
+                <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="{{ url_for('customer_portal') }}"><i class="fas fa-user"></i> My Portal</a></li>
+                <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Booking Form -->
+    <main class="booking-container">
+        <section class="form-section">
+            <h1>Create a New Booking</h1>
+            <p>Fill out the form below to get an instant quote and confirm your booking.</p>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <!-- Booking Form -->
+            <form action="{{ url_for('place_order') }}" method="POST" id="bookingForm">
+                <!-- Pickup Location -->
+                <div class="form-group">
+                    <label for="pickup_location">Pickup Location:</label>
+                    <input type="text" id="pickup_location" name="pickup_location" placeholder="Enter pickup address" required>
+                </div>
+
+                <!-- Pickup Floors -->
+                <div class="form-group">
+                    <label for="pickup_floors">Pickup Floors:</label>
+                    <input type="number" id="pickup_floors" name="pickup_floors" min="0" placeholder="Number of floors" required>
+                </div>
+
+                <!-- Dropoff Location -->
+                <div class="form-group">
+                    <label for="dropoff_location">Dropoff Location:</label>
+                    <input type="text" id="dropoff_location" name="dropoff_location" placeholder="Enter dropoff address" required>
+                </div>
+
+                <!-- Dropoff Floors -->
+                <div class="form-group">
+                    <label for="dropoff_floors">Dropoff Floors:</label>
+                    <input type="number" id="dropoff_floors" name="dropoff_floors" min="0" placeholder="Number of floors" required>
+                </div>
+
+                <!-- Pickup Date -->
+                <div class="form-group">
+                    <label for="pickup_date">Pickup Date:</label>
+                    <input type="date" id="pickup_date" name="pickup_date" required>
+                </div>
+
+                <!-- Pickup Time -->
+                <div class="form-group">
+                    <label for="pickup_time">Pickup Time:</label>
+                    <input type="time" id="pickup_time" name="pickup_time" required>
+                </div>
+
+                <!-- Number of Items -->
+                <div class="form-group">
+                    <label for="items_count">Number of Items:</label>
+                    <input type="number" id="items_count" name="items_count" min="1" placeholder="Enter number of items" required>
+                </div>
+
+                <!-- Item Type -->
+                <div class="form-group">
+                    <label for="item_type">Item Type:</label>
+                    <select id="item_type" name="item_type" required>
+                        <option value="small">Small</option>
+                        <option value="large">Large</option>
+                    </select>
+                </div>
+
+                <!-- Estimated Distance -->
+                <div class="form-group">
+                    <label for="distance">Estimated Distance (miles):</label>
+                    <input type="number" id="distance" name="distance" readonly placeholder="Calculated automatically">
+                </div>
+
+                <!-- Buttons -->
+                <div class="form-buttons">
+                    <button type="button" id="calculateDistanceBtn" class="btn-secondary">Calculate Distance</button>
+                    <button type="submit" class="btn-success">Place Order</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; {{ year() }} MoVan & Man. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Calculate Distance Button
+        document.getElementById('calculateDistanceBtn').addEventListener('click', function () {
+            const pickup = document.getElementById('pickup_location').value;
+            const dropoff = document.getElementById('dropoff_location').value;
+
+            if (pickup && dropoff) {
+                fetch(`/calculate_distance?pickup=${encodeURIComponent(pickup)}&dropoff=${encodeURIComponent(dropoff)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.distance) {
+                            document.getElementById('distance').value = data.distance;
+                            alert(`Estimated Distance: ${data.distance} miles`);
+                        } else {
+                            alert('Could not calculate distance. Please check addresses.');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            } else {
+                alert('Please fill in both pickup and dropoff addresses.');
+            }
+        });
+    </script>
+
+</body>
+
+</html>
