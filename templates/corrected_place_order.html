@@ -1,0 +1,33 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Place New Order</h1>
+<form method="POST">
+    <div class="mb-3">
+        <label for="pickup_location" class="form-label">Pickup Location</label>
+        <input type="text" class="form-control" id="pickup_location" name="pickup_location" required>
+    </div>
+    <div class="mb-3">
+        <label for="pickup_floors" class="form-label">Pickup Location Floors</label>
+        <input type="number" class="form-control" id="pickup_floors" name="pickup_floors" min="0" required>
+    </div>
+    <div class="mb-3">
+        <label for="dropoff_location" class="form-label">Dropoff Location</label>
+        <input type="text" class="form-control" id="dropoff_location" name="dropoff_location" required>
+    </div>
+    <div class="mb-3">
+        <label for="dropoff_floors" class="form-label">Dropoff Location Floors</label>
+        <input type="number" class="form-control" id="dropoff_floors" name="dropoff_floors" min="0" required>
+    </div>
+    <div class="mb-3">
+        <label for="date" class="form-label">Date</label>
+        <input type="date" class="form-control" id="date" name="date" required>
+    </div>
+    <div class="mb-3">
+        <label for="time" class="form-label">Time</label>
+        <input type="time" class="form-control" id="time" name="time" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Place Order</button>
+</form>
+{% endblock %}

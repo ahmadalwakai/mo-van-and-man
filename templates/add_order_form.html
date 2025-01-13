@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Order</title>
+</head>
+<body>
+    <form action="/confirm_order" method="post">
+        <input type="text" name="pickup_location" placeholder="Pickup Location" required>
+        <input type="text" name="dropoff_location" placeholder="Dropoff Location" required>
+        <input type="number" name="floors" placeholder="Number of Floors" required>
+        <input type="text" name="items" placeholder="Items" required>
+        <input type="date" name="date" required>
+        <input type="time" name="time" required>
+        <select name="payment_method" required>
+            <option value="card">Card</option>
+            <option value="cash">Cash</option>
+            <option value="paypal">PayPal</option>
+        </select>
+        <button type="submit">Submit Order</button>
+    </form>
+</body>
+</html>

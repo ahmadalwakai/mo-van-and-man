@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Order Invoice</title>
+</head>
+<body>
+    <div class="email-container">
+        <h1>Order Invoice</h1>
+        <p>Dear {{ first_name }},</p>
+        <p>Thank you for your order!</p>
+        <p><strong>Order ID:</strong> {{ order.id }}</p>
+        <p><strong>Pickup Location:</strong> {{ order.pickup_location }}</p>
+        <p><strong>Dropoff Location:</strong> {{ order.dropoff_location }}</p>
+        <p><strong>Total Price:</strong> £{{ order.price }}</p>
+        <p>We appreciate your business and look forward to serving you again.</p>
+        <p>Best regards,<br>The Mo Van and Man Team</p>
+    </div>
+</body>
+</html>
